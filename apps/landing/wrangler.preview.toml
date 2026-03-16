@@ -1,0 +1,13 @@
+name = "cloudpoints-landing"
+main = "dist/_worker.js/index.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+assets = { directory = "dist", binding = "ASSETS" }
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cloudpoints-db"
+database_id = "31cba35f-8e23-46eb-880f-19d667c0946b"
+
+[triggers]
+crons = ["0 */4 * * *"]

@@ -1,0 +1,22 @@
+{
+    "name": "cloudpoints-root",
+    "private": true,
+    "scripts": {
+        "dev:web": "pnpm --filter web dev",
+        "dev:landing": "pnpm --filter landing dev",
+        "build:web": "pnpm --filter web build",
+        "build:landing": "pnpm --filter landing build",
+        "install:all": "pnpm install",
+        "clean": "rm -rf node_modules apps/*/node_modules"
+    },
+    "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd",
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.9.1"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild",
+            "better-sqlite3"
+        ]
+    }
+}

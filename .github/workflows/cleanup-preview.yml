@@ -1,0 +1,63 @@
+name: Cleanup Stale Previews
+
+on:
+  schedule:
+    - cron: '0 5 * * *' # Every day UTC 05:00
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      MAX_AGE_DAYS: 1
+    steps:
+      - name: Cleanup stale preview workers and containers
+        run: |
+          CUTOFF=$(date -d "-${MAX_AGE_DAYS} days" -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "Cutoff: $CUTOFF (older than ${MAX_AGE_DAYS} days)"
+
+          # Production worker names — never delete these
+          PROD_NAMES='["cloudpoints-gateway","cloudpoints-web","cloudpoints-landing","cloudpoints-backend","cloudpoints-admin","cloudpoints-gateway-preview"]'
+
+          # Fetch all workers
+          WORKERS=$(curl -s \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts" \
+            | jq -c '.result[]')
+
+          # Delete stale preview workers (any cloudpoints-* not in production list, older than cutoff)
+          echo "$WORKERS" | jq -r --arg cutoff "$CUTOFF" --argjson prod "$PROD_NAMES" 'select(
+            (.id | startswith("cloudpoints-"))
+            and (.id | IN($prod[]) | not)
+            and (.modified_on < $cutoff)
+          ) | .id' | while read -r WORKER; do
+            echo "Deleting worker: $WORKER"
+            curl -s -X DELETE \
+              -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/$WORKER" \
+              | jq -r '"  → success: \(.success)"'
+          done
+
+          # Cleanup stale container applications
+          CONTAINERS=$(curl -s \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/containers/applications" \
+            | jq -c '.result[]? // empty')
+
+          if [ -n "$CONTAINERS" ]; then
+            echo "$CONTAINERS" | jq -r --arg cutoff "$CUTOFF" 'select(
+              (.name | startswith("cloudpoints-"))
+              and (.name | IN("cloudpoints-backend-backendcontainer") | not)
+              and ((.modified_on // .created_on // "9999") < $cutoff)
+            ) | .name' | while read -r APP; do
+              echo "Deleting container app: $APP"
+              curl -s -X DELETE \
+                -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+                "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/containers/applications/$APP" \
+                | jq -r '"  → success: \(.success)"'
+            done
+          fi
+
+          echo "Done."

@@ -1,0 +1,23 @@
+{
+  "name": "cloudpoints-gateway",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@cloudpoints/auth": "workspace:*",
+    "better-auth": "^1.2.0",
+    "drizzle-orm": "^0.44.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241205.0",
+    "@types/better-sqlite3": "^7.6.12",
+    "better-sqlite3": "^11.9.1",
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.14.0"
+  }
+}

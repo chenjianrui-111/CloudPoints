@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animations */
+@keyframes music-bar {
+
+  0%,
+  100% {
+    height: 20%;
+  }
+
+  50% {
+    height: 100%;
+  }
+}
+
+.animate-music-bar-1 {
+  animation: music-bar 0.8s ease-in-out infinite;
+}
+
+.animate-music-bar-2 {
+  animation: music-bar 0.8s ease-in-out infinite 0.2s;
+}
+
+.animate-music-bar-3 {
+  animation: music-bar 0.8s ease-in-out infinite 0.4s;
+}
+
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer components {
+  /* Unified navigation button style for sidebar */
+  .nav-btn {
+    @apply p-3 rounded-xl text-gemini-subtext hover:bg-white hover:text-gemini-text transition-colors;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+body {
+  @apply bg-gemini-bg text-gemini-text font-sans selection:bg-gemini-primary selection:text-white antialiased;
+}
+
+/* Gemini Scrollbar (Subtle) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E3E3E3;
+  /* gemini-border */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C4C7C5;
+  /* Darker gray for hover state */
+}
+
+/* Prose (Markdown) Custom Styles — compact & refined */
+.prose {
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.prose code {
+  background-color: #f3f4f6;
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+.prose pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.8rem;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.prose ul {
+  list-style-type: disc;
+  margin-left: 1.25em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  margin-left: 1.25em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+.prose li {
+  margin-top: 0.15em;
+  margin-bottom: 0.15em;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: #1d4ed8;
+}
+
+.prose blockquote {
+  border-left: 3px solid #e5e7eb;
+  padding-left: 0.875rem;
+  font-style: italic;
+  color: #6b7280;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  font-weight: 600;
+  color: #1f2937;
+  margin-top: 0.75em;
+  margin-bottom: 0.4em;
+}
+
+.prose h1 { font-size: 1.125rem; }
+.prose h2 { font-size: 1rem; }
+.prose h3 { font-size: 0.9375rem; }
+
+.prose p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
