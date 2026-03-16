@@ -2,6 +2,11 @@
 
 > 基于 LangGraph Agent + Apple Music 的智能音乐 DJ 助手，支持自然语言对话式音乐播放控制。
 
+## 项目样式
+<img width="3668" height="1892" alt="Kim 2026-03-16 224026" src="https://github.com/user-attachments/assets/c8f7dc97-30d1-4d65-a5fe-f3fa40c95de5" />
+
+<img width="3668" height="1892" alt="Kim 2026-03-16 224116" src="https://github.com/user-attachments/assets/d8e91421-eddb-4c8d-ac0f-ffd7460b7389" />
+
 ## 项目架构
 
 ```
